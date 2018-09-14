@@ -48,6 +48,26 @@ def clean_text(text):
     text = re.sub(r"can't","cannot",text)
     text = re.sub(r"[-()\"#/@;:<>{}+=-|.?,]","",text)
     return text
+ 
+clean_questions = []
+clean_answers = []
+for question in questions:
+    clean_questions.append(clean_text(question))
+    
+for answer in answers:
+    clean_answers.append(clean_text(answer))
 
-    
-    
+word2count = {}
+
+for question in clean_questions:
+    for word in question.split():
+        if word not in word2count:
+            word2count[word] = 1
+        else:
+            word2count[word] += 1
+for answer in clean_answers:
+    for word in answer.split():
+        if word not in word2count:
+            word2count[word] = 1
+        else:
+            word2count[word] += 1
