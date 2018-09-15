@@ -9,7 +9,7 @@ import time
  
 
 lines = open('./dataset/movie_lines.txt',encoding='utf-8',errors='ignore').read().split('\n')
-
+ 
 conversations = open('./dataset/movie_conversations.txt',
                      encoding='utf-8',errors='ignore').read().split('\n')
 
@@ -79,13 +79,21 @@ answerswords2int = {}
 
 word_number = 0
 for word,count in word2count.items():
-    if count>=20:
+    if count>=threshold:
         questionswords2int[word] = word_number
         word_number += 1
 
 word_number = 0
 for word,count in word2count.items():
-    if count>=20:
+    if count>=threshold:
         answerswords2int[word] = word_number
         word_number += 1
-        
+
+tokens = ['<PAD>','<EOS>','<OUT>','<SOS>']
+for token in tokens:
+    questionswords2int[token] = len(questionswords2int)+1
+
+for token in tokens:
+    answerswords2int[token] = len(answerswords2int)+1      
+
+answersint2word = {integer_val:word_key for word_key,integer_val in answerswords2int.items()}
