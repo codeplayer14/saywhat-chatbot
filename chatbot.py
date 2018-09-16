@@ -121,3 +121,31 @@ for answer in clean_answers:
         else:
             ints.append(answerswords2int[word])
     answers_to_int.append(ints)
+
+sorted_clean_questions = []
+sorted_clean_answers = []
+
+for length in range(1,25):
+    
+    for i in enumerate(questions_to_int):
+        if(len(i) == length):
+            sorted_clean_questions.append(questions_to_int[0])
+            sorted_clean_answers.append(answers_to_int[0])
+
+
+#building the seq2seq model
+            
+
+def model_inputs():
+    inputs = tf.placeholder(tf.int32,[None,None],name='input')
+    targets = tf.placeholder(tf.int32,[None,None],name='target')
+    lr = tf.placeholder(tf.float32,name='learning_rate')
+    keep_prob = tf.placeholder(tf.placeholder,name='keep_prob')
+    return inputs,targets,lr,keep_prob
+
+def preprocess_targets(targets,word2int,batch_size=10):
+    left_side = tf.fill([batch_size,1],word2int['<SOS>'])
+    right_side = tf.strided_slice(targets,0,[batch_size,-1],[1,1])
+    preprocessed_targets = tf.concat((left_side,right_side),axis=1)
+    return preprocessed_targets
+
